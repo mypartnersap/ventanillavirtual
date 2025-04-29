@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}MyPartner | Ventanilla virtual{% endblock %}
+{% block header_ext %}
+<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css" rel="stylesheet" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'dropzone.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+{% endblock header_ext %}
+
+{% block content %}
+
+<div class="container pt-5">
+<!--  {% block messages %}-->
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+  {% endfor %}
+<!--  {% endblock messages %}-->
+</div>
+
+<div class="container pt-5">
+    <main>
+      <div class="py-5 text-center">
+        <h2>Formulario de carga de documentos - LOGGEADO</h2>
+        <p class="lead">Alimente los datos solicitados para cargar el documento en la ventanilla virtual.</p>
+      </div>
+      <div class="row g-5">
+        <div>
+          <h4 class="mb-3">Datos de identificación</h4>
+                <form action="" method="POST">
+                    {% csrf_token %}
+
+                    <div class="row p-1">
+                        <div class="col-sm-6">
+                        <label for="{{ form.numberId.id_for_label }}" class="form-label">{{ form.typeId.label }}</label><br>
+                        {{ form.typeId }}
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="{{ form.numberId.id_for_label }}" class="form-label">{{ form.numberId.label }}</label><br>
+                        {{ form.numberId }}
+                        </div>
+                    </div>
+
+                    <div class="row p-1">
+                        <div class="col-sm-6">
+                        <label for="{{ form.firstName.id_for_label }}" class="form-label">{{ form.first_name.label }}</label><br>
+                        {{ form.first_name }}
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="{{ form.lastName.id_for_label }}" class="form-label">{{ form.last_name.label }}</label><br>
+                        {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="row p-1">
+                        <div class="col-sm-6">
+                            <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label><br>
+                        {{ form.email }}
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="{{ form.phone.id_for_label }}" class="form-label">{{ form.phone.label }}</label><br>
+                        {{ form.phone }}
+                        </div>
+                    </div>
+                    {{ form.user }}
+                   <div class="col-12 text-end mt-3">
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                   </div>
+                </form>
+
+            <hr>
+
+            <h4 class="mb-3">Contenido de la solicitud</h4>
+                <form action="{% url 'create_record' %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ r_form.owner_id }}
+<!--                    {{ r_form.as_p }}-->
+                    <div class="row p-1">
+                        <div class="col-sm-6">
+                        <label for="{{ form.numberId.id_for_label }}" class="form-label">{{ r_form.area.label }}</label><br>
+                        {{ r_form.area }}
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="{{ form.numberId.id_for_label }}" class="form-label">{{ r_form.documentType.label }}</label><br>
+                        {{ r_form.documentType }}
+                        </div>
+                    </div>
+
+                    <div class="row p-1">
+                        <div class="col-sm-6">
+                        <label for="{{ form.firstName.id_for_label }}" class="form-label">{{ r_form.contractNumber.label }}</label><br>
+                        {{ r_form.contractNumber }}
+                        </div>
+                        <div class="col-sm-6">
+                            <label for="{{ form.lastName.id_for_label }}" class="form-label">{{ r_form.documentDate.label }}</label><br>
+                        {{ r_form.documentDate }}
+                        </div>
+                    </div>
+
+                    <div class="row p-1">
+
+                        <div class="col-8">
+                            <label for="{{ form.subject.id_for_label }}" class="form-label">{{ r_form.subject.label }}</label><br>
+                        {{ r_form.subject }}
+                        </div>
+                        <div class="col-4 d-flex align-items-center mt-4">
+                            <label for="{{ form.replyCheck.id_for_label }}" class="form-label me-5">{{ r_form.replyCheck.label }}</label>
+                            {{ r_form.replyCheck }}
+                        </div>
+                    </div>
+                    <div class="row pt-4 text-center">
+                        <div class="col-12">
+<!--                           <div class="drop-zone">-->
+<!--                              <div class="drop-zone__text">Arrastre los archivos o de clic en el área para cargarlos</div>-->
+<!--                              <div class="thumbnails"></div>-->
+                               {{ r_form.file }}
+<!--                           </div>-->
+                        </div>
+                    </div>
+                    <div class="col-12 text-end mt-3">
+                    <button type="submit" class="btn btn-primary">Guardar registro</button>
+                    </div>
+                </form>
+        </div>
+      </div>
+        <hr class="mb-6">
+        <section class="mt-5">
+
+            <h4 style="display: inline-block;">Registros</h4>{% if 'search_results' in request.session %}<a href="{% url 'delete_filters' %}"><i class="ms-5 bi bi-eraser" style="font-size:1.5em;" data-bs-toggle="tooltip" title="Borrar filtros"></i></a>{% endif %}
+
+                <form action="{% url 'record_search' %}" method="POST">
+                {% csrf_token %}
+<!--                {{ s_form.as_p }}-->
+                   <div class="row p-1">
+                        <div class="col-3">
+                        <label for="{{ s_form.area.id_for_label }}" class="form-label">{{ s_form.area.label }}</label><br>
+                        {{ s_form.area }}
+                        </div>
+                        <div class="col-3">
+                            <label for="{{ s_form.documentType.id_for_label }}" class="form-label">{{ s_form.documentType.label }}</label><br>
+                        {{ s_form.documentType }}
+                        </div>
+                       <div class="col-3">
+                            <label for="{{ s_form.documentDate.id_for_label }}" class="form-label">{{ s_form.documentDate.label }}</label><br>
+                        {{ s_form.documentDate }}
+                        </div>
+                       <div class="col-3">
+                            <label for="{{ s_form.contractNumber.id_for_label }}" class="form-label">{{ s_form.contractNumber.label }}</label><br>
+                        {{ s_form.contractNumber }}
+                        </div>
+                    </div>
+
+                <div class="row p-1">
+                        <div class="col-8">
+                        <label for="{{ s_form.subject.id_for_label }}" class="form-label">{{ s_form.subject.label }}</label><br>
+                        {{ s_form.subject }}
+                        </div>
+                        <div class="col-4 pt-4">
+                        <button type="submit" class="mt-2 btn btn-primary">Buscar</button>
+                        </div>
+                </div>
+            </form>
+
+            <table class="table table-hover mt-5">
+                <thead>
+                <th>Fecha documento</th>
+                <th>Contrato</th>
+                <th>Asunto</th>
+                <th>Tipo de documento</th>
+                <th>Departamento</th>
+                <th>Referencia adjunto</th>
+                <th>Remitente</th>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+
+                       <tr>
+                           <td>{{ record.documentDate }}</td>
+                           <td>{{ record.contractNumber }}</td>
+                           <td>{{ record.subject }}</td>
+                           <td>{{ record.documentType }}</td>
+                           <td>{{ record.area }}</td>
+                           <td><a href="{% url 'download_file' pk=record.pk %}" target="_blank">{{ record.documentType | slice:":3" | upper }}-{{ record.recordId }}</a></td>
+                           <td>{{ record.owner_id.get_full_name | title }}</td>
+                       </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+
+
+<!--            <form action="{% url 'record_search' %}" method="POST">-->
+<!--                {% csrf_token %}-->
+<!--&lt;!&ndash;                {{ s_form.as_p }}&ndash;&gt;-->
+<!--                   <div class="row p-1">-->
+<!--                        <div class="col-3">-->
+<!--                        <label for="{{ s_form.area.id_for_label }}" class="form-label">{{ s_form.area.label }}</label><br>-->
+<!--                        {{ s_form.area }}-->
+<!--                        </div>-->
+<!--                        <div class="col-3">-->
+<!--                            <label for="{{ s_form.documentType.id_for_label }}" class="form-label">{{ s_form.documentType.label }}</label><br>-->
+<!--                        {{ s_form.documentType }}-->
+<!--                        </div>-->
+<!--                       <div class="col-3">-->
+<!--                            <label for="{{ s_form.documentDate.id_for_label }}" class="form-label">{{ s_form.documentDate.label }}</label><br>-->
+<!--                        {{ s_form.documentDate }}-->
+<!--                        </div>-->
+<!--                       <div class="col-3">-->
+<!--                            <label for="{{ s_form.contractNumber.id_for_label }}" class="form-label">{{ s_form.contractNumber.label }}</label><br>-->
+<!--                        {{ s_form.contractNumber }}-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                <div class="row p-1">-->
+<!--                        <div class="col-8">-->
+<!--                        <label for="{{ s_form.subject.id_for_label }}" class="form-label">{{ s_form.subject.label }}</label><br>-->
+<!--                        {{ s_form.subject }}-->
+<!--                        </div>-->
+<!--                        <div class="col-4 pt-4">-->
+<!--                        <button type="submit" class="mt-2 btn btn-primary">Buscar</button>-->
+<!--                        </div>-->
+<!--                </div>-->
+<!--            </form>-->
+
+        </section>
+
+
+    </main>
+
+    <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+      <p class="mb-1">&copy; 2023 MyPartner</p>
+      <ul class="list-inline">
+        <li class="list-inline-item"><a href="#">Aviso de privacidad</a></li>
+        <li class="list-inline-item"><a href="#">Soporte</a></li>
+      </ul>
+    </footer>
+  </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
+<script src="{% static 'dropzone.js' %}"></script>
+
+<script>
+  // Cierra el mensaje de éxito automáticamente después de 5 segundos
+  setTimeout(function() {
+    var successMessage = document.querySelector('.alert-success');
+    if (successMessage) {
+      successMessage.style.display = 'none';
+    }
+  }, 5000);
+</script>
+
+{% endblock js %}

@@ -1,0 +1,21 @@
+.navbar-brand {
+    font-family: 'Suez One', serif;
+    font-size: 1.5rem;
+}
+
+.navbar {
+    background-image: linear-gradient(to right, #044fb3, #0068c7, #0081d7, #009ae5, #14b2f1, #57bff6, #7dcdfa, #9cdaff, #c0e1ff, #dce9ff, #f1f3ff, #ffffff);    
+}
+
+.navbar-toggler {    
+    background-color : #9cdaff !important;
+}
+
+.custom-offcanvas {
+    font-family: 'Suez One', serif;
+}
+
+.icon-img {
+    max-width: 20px; /* Define el ancho máximo del ícono */
+    max-height: 20px; /* Define la altura máxima del ícono */
+  }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="-249 251 500 500" style="enable-background:new -249 251 500 500;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;}
+	.st1{fill:#A6D5FF;}
+	.st2{filter:url(#Hmac7mZraFWHw0G84Yxj4QuzeTFp0E7Y);}
+	.st3{fill:#EBEBEB;}
+	.st4{fill:#D4E9FF;}
+</style>
+<filter  width="400%" height="400%" x="-200%" id="Hmac7mZraFWHw0G84Yxj4QuzeTFp0E7Y" y="-200%" filterUnits="objectBoundingBox" color-interpolation-filters="sRGB">
+	<feGaussianBlur  stdDeviation="6.440413594258542" in="SourceGraphic" xmlns="http://www.w3.org/2000/svg"></feGaussianBlur>
+	<feOffset  dx="0" dy="0" result="pf_100_offsetBlur" xmlns="http://www.w3.org/2000/svg"></feOffset>
+	<feFlood  flood-opacity="0.65" flood-color="#000000" xmlns="http://www.w3.org/2000/svg"></feFlood>
+	<feComposite  result="pf_100_dropShadow" in2="pf_100_offsetBlur" operator="in" xmlns="http://www.w3.org/2000/svg">
+		</feComposite>
+	<feBlend  in2="pf_100_dropShadow" mode="normal" in="SourceGraphic" xmlns="http://www.w3.org/2000/svg"></feBlend>
+</filter>
+<rect x="-249" y="251" class="st0" width="500" height="500"/>
+<path class="st1" d="M69.4,704.5l145.3-404c2.5-6.9-1.4-11.8-8.7-11.1l-114.3,11c-7.2,0.7-15.1,6.8-17.5,13.7L-60.2,700.2
+	c-2.4,6.9,1.6,12.5,8.9,12.5H59.9c3.6,0,7.6-2.8,8.8-6.2L69.4,704.5z"/>
+<g class="st2">
+	<path class="st3" d="M52.8,706.5L-7.6,531.7l8.6-5.4l61.6,178.2L52.8,706.5z"/>
+</g>
+<path class="st4" d="M-204,289.4l114.3,11c7.2,0.7,15.1,6.8,17.5,13.7L65,706.4c1.2,3.4-0.8,6.2-4.4,6.2H-51.3
+	c-7.3,0-15.2-5.6-17.7-12.4l-143.7-399.7C-215.2,293.7-211.3,288.7-204,289.4z"/>
+</svg>
