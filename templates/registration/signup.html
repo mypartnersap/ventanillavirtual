@@ -1,0 +1,27 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ventanilla virtual | Registro usuario{% endblock %}
+
+{% block header_ext %}
+  <style>
+    .form-container {
+      margin-top: 8%;
+      margin-bottom: 5%;
+      max-width: 500px;
+    } 
+  </style>
+{% endblock header_ext %}
+
+{% block content %}
+<div class="form-floating pb-3 form-container">  
+  <img class="mb-4" src="{% static 'logo-ventanilla.svg' %}" alt="" width="72" height="57">
+  <h2>Registro de Usuario</h2>
+  <form method="post" id="signupform">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="w-100 btn btn-lg btn btn-primary">Registrarse</button>
+    <a class="w-100 btn btn-lg btn btn-light" type="submit" href="{% url 'login' %}">¿Ya tienes una cuenta? Inicia sesión</a>
+  </form>
+</div>
+{% endblock %}

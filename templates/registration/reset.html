@@ -1,0 +1,65 @@
+<!-- templates/registration/login.html -->
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ventanilla virtual | Inicio de sesión{% endblock %}
+
+{% block header_ext %}
+
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+  </style>
+  <!-- Custom styles for this template -->
+  <link rel="stylesheet" href="{% static '/signin.css' %}">
+
+  {% endblock header_ext %}
+
+  {% block content %}
+  <form class="form-signin" method="post">    
+    <img class="mb-1" src="{% static '/assets/2022/02/lock.svg'%}" alt="" width="150">
+    <h1 class="h3 mb-3 font-weight-normal">Ventanilla virtual</h1>
+    <h4 class="h6 mb-3 font-weight-normal">¿Tienes problemas para entrar?</h4>
+    <h4 class="h6 mb-3 font-weight-normal">Introduce tu Nit y te enviaremos un enlace para que vuelvas a entrar en tu cuenta.</h4>
+    {% csrf_token %}
+    <div class="form-floating">      
+      <input type="text" name="nit" id="id_nit" class="form-control" placeholder="Nit" required="" autofocus="" onkeypress="return onlyNumberKey(event)">
+      <label for="id_nit">Nit</label>
+    </div>
+
+    <div class="form-floating">
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Enviar enlace de acceso</button>
+    </div>
+    
+
+    <div class="form-floating">
+      <h6 class="mt-0 mb-3">Volver al <a type="button" class="btn btn-link" href="{% url 'login' %}">Inicio de sesión</a></h6>
+    </div>
+
+    <div class="form-floating">
+      <h6 class="mt-0 mb-3 text-muted">My Partner @{% now 'Y' %} | Ventanilla virtual</h6>
+    </div>
+
+  </form>
+
+  <script type="text/javascript">
+    function onlyNumberKey(evt) {
+          
+          // Only ASCII character in that range allowed
+          var ASCIICode = (evt.which) ? evt.which : evt.keyCode
+          if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+              return false;
+          return true;
+      }
+  </script>
+{% endblock %}

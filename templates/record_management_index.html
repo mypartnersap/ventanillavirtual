@@ -1,0 +1,449 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}MyPartner | Ventanilla virtual{% endblock %}
+{% block header_ext %}
+<link href="https://cdn.jsdelivr.net/gh/Eonasdan/tempus-dominus@master/dist/css/tempus-dominus.css" rel="stylesheet" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="{% static 'dropzone.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<style>
+.form-check-input {
+    width: 1.4em;
+    height: 1.4em;
+    margin-top: 0em;
+}
+
+.form-check-label {
+  padding-left: 1em;
+}
+
+</style>
+
+{% endblock header_ext %}
+
+{% block content %}
+
+<div class="container pt-5">
+  {% block messages %}
+  {% if messages %}
+    <div class="alert alert-success">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% endblock messages %}
+</div>
+
+<div class="container pt-5">
+    <main>  
+      <div class="py-5 text-center">
+        <h2>Formulario de carga de documentos</h2>
+
+        <h5 class="mb-3" id="currentDateTime"></h5>
+        
+        <p class="lead">Diligencie los datos solicitados para cargar el documento en la ventanilla virtual.</p>
+      </div>
+      <div class="row g-5">
+        <div>          
+          <form  method="post" id="myForm">            
+            {% csrf_token %}
+
+            <div class="row g-3">                
+                <div class="col h3 text-primary">
+                    Empresa {{ company }} - Nit: {{ company.companyid }}
+                </div>
+            </div>
+
+            <h4 class="mb-3">Datos de identificación</h4>
+            <div class="row g-3">
+
+              <div class="col-sm-6">
+                <label for="{{ form.typeId.id_for_label }}" class="form-label">{{ form.typeId.label }}</label>
+                {% if user.is_authenticated %}
+                  {{ form.typeId }}
+                  <script>
+                    document.getElementById("{{ form.typeId.id_for_label }}").disabled = true;                    
+                  </script>
+                  <input type="hidden" id= "hiddenTypeId" name="typeId" value="">
+                  
+                {% else %}
+                  {{ form.typeId }}
+                {% endif %}
+              </div>
+
+              <div class="col-sm-6">
+                <label for="{{ form.numberId.id_for_label }}" class="form-label">{{ form.numberId.label }}</label>
+                {% if user.is_authenticated %}
+                    {{ form.numberId }}
+                  <script>
+                    var field_numberId = document.getElementById("{{ form.numberId.id_for_label }}")
+                    field_numberId.style.backgroundColor = "#e9ecef";
+                    field_numberId.style.pointerEvents = "none";                    
+                  </script>
+                {% else %}
+                  {{ form.numberId }}
+                {% endif %}
+              </div>
+
+              <div class="col-sm-6">
+                <label for="{{ form.firstName.id_for_label }}" id="firstNameLabel" class="form-label">{{ form.firstName.label }}</label>
+                {% if user.is_authenticated %}
+                  {{ form.firstName }}
+                  <script>
+                    var field_firstName = document.getElementById("{{ form.firstName.id_for_label }}")
+                    field_firstName.style.backgroundColor = "#e9ecef";
+                    field_firstName.style.pointerEvents = "none";
+                  </script>
+                {% else %}
+                  {{ form.firstName }}
+                {% endif %}
+              </div>
+  
+              <div class="col-sm-6">
+                <label for="{{ form.lastName.id_for_label }}" class="form-label">{{ form.lastName.label }}</label>
+                {% if user.is_authenticated %}
+                  {{ form.lastName }}
+                  <script>
+                    var field_lastName = document.getElementById("{{ form.lastName.id_for_label }}")
+                    field_lastName.style.backgroundColor = "#e9ecef";
+                    field_lastName.style.pointerEvents = "none";
+                  </script>
+                {% else %}
+                  {{ form.lastName }}
+                {% endif %}
+              </div>              
+  
+              <div class="col-sm-6">
+                <label for="{{ form.email.id_for_label }}" class="form-label">{{ form.email.label }}</label>
+                {% if user.is_authenticated %}
+                  {{ form.email }}
+                  <script>
+                    var field_email = document.getElementById("{{ form.email.id_for_label }}")
+                    field_email.style.backgroundColor = "#e9ecef";
+                    field_email.style.pointerEvents = "none";                    
+                  </script>
+                {% else %}  
+                  {{ form.email }}
+                {% endif %}
+              </div>
+
+              {% if not user.is_authenticated %}
+                <div class="col-sm-6">
+                  <label for="email_confirmation" class="form-label">Correo electrónico (confirmación)</label>
+                  <input type="email" class="form-control" id="email_confirmation" aria-describedby="emailHelp" placeholder="Verifique su correo">
+                </div>
+              {% endif %}
+              
+            <hr class="my-4">            
+  
+            <h4 class="mb-3">Contenido de la solicitud</h4>
+
+            <div class="col-sm-12">
+              <label for="{{ form.subject.id_for_label }}" class="form-label">{{ form.subject.label }}</label>
+              {{ form.subject }}
+            </div>
+
+            <div class="col-sm-12">
+              <label for="{{ form.contactperson.id_for_label }}" class="form-label">{{ form.contactperson.label }}</label>
+              {{ form.contactperson }}
+            </div>
+
+            <div class="col-sm-6">
+              <label for="{{ form.messageType.id_for_label }}" class="form-label">{{ form.messageType.label }}</label>
+              {{ form.messageType }}
+            </div>
+
+            <div class="col-sm-6">
+              <label for="{{ form.area.id_for_label }}" class="form-label">{{ form.area.label }}</label>
+              {{ form.area }}
+            </div>
+  
+            <div class="col-sm-6">
+              <label for="{{ form.contractNumber.id_for_label }}" class="form-label">{{ form.contractNumber.label }}</label>
+              {{ form.contractNumber }}
+            </div>
+
+            <div class="col-sm-6">
+              <label for="{{ form.documentDate.id_for_label }}" class="form-label">{{ form.documentDate.label }}</label>
+              {{ form.documentDate }}
+            </div>
+
+            <div class="col-sm-12">
+              <label for="{{ form.url.id_for_label }}" class="form-label">{{ form.url.label }}</label>
+              {{ form.url }}
+            </div>
+
+            <div class="col-sm-12">
+            <div class="form-group form-check">
+              <label class="form-check-label" for="{{ form.replyCheck.id_for_label }}">{{ form.replyCheck.label }}</label>
+              {{ form.replyCheck }}
+            </div>
+            </div>
+
+            <!-- Renderizar campos extras si están disponibles -->
+            {% if record_extra_fields.extrafield1 %}
+              <h4 class="mb-3">Información adicional</h4> 
+            {% endif %}
+
+            {% if record_extra_fields.extrafield1 %}                           
+              <div class="col-sm-6">
+                <label for="extrafield1" class="form-label">{{ record_extra_fields.extrafield1 }}</label>
+                <input type="text" id="extrafield1" name="extrafield1" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield2 %}
+              <div class="col-sm-6">
+                <label for="extrafield2" class="form-label">{{ record_extra_fields.extrafield2 }}</label>
+                <input type="text" id="extrafield2" name="extrafield2" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield3 %}
+              <div class="col-sm-6">
+                <label for="extrafield3" class="form-label">{{ record_extra_fields.extrafield3 }}</label>
+                <input type="text" id="extrafield3" name="extrafield3" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield4 %}
+              <div class="col-sm-6">
+                <label for="extrafield4" class="form-label">{{ record_extra_fields.extrafield4 }}</label>
+                <input type="text" id="extrafield4" name="extrafield4" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield5 %}
+              <div class="col-sm-6">
+                <label for="extrafield5" class="form-label">{{ record_extra_fields.extrafield5 }}</label>
+                <input type="text" id="extrafield5" name="extrafield5" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield6 %}
+              <div class="col-sm-6">
+                <label for="extrafield6" class="form-label">{{ record_extra_fields.extrafield6 }}</label>
+                <input type="text" id="extrafield6" name="extrafield6" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield7 %}
+              <div class="col-sm-6">
+                <label for="extrafield7" class="form-label">{{ record_extra_fields.extrafield7 }}</label>
+                <input type="text" id="extrafield7" name="extrafield7" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield8 %}
+              <div class="col-sm-6">
+                <label for="extrafield8" class="form-label">{{ record_extra_fields.extrafield8 }}</label>
+                <input type="text" id="extrafield8" name="extrafield8" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield9 %}
+              <div class="col-sm-6">
+                <label for="extrafield9" class="form-label">{{ record_extra_fields.extrafield9 }}</label>
+                <input type="text" id="extrafield9" name="extrafield9" class="form-control">
+              </div>
+            {% endif %}
+
+            {% if record_extra_fields.extrafield10 %}
+              <div class="col-sm-6">
+                <label for="extrafield10" class="form-label">{{ record_extra_fields.extrafield10 }}</label>
+                <input type="text" id="extrafield10" name="extrafield10" class="form-control">
+              </div>
+            {% endif %}
+            
+            <div class="drop-zone">              
+              <div class="drop-zone__text">Arrastre los archivos o de clic en el área para cargarlos</div>
+              <div class="thumbnails"></div>
+              <input type="file" name="myFile" class="drop-zone__input">
+            </div>
+
+            <div class="mb-3">
+            <button type="button" class="btn btn-light" id="btnclear">
+              <i class="bi bi-trash"> Clic para borrar adjuntos</i>
+            </button>
+            </div>
+            
+            <hr class="my-4">        
+
+            <h5 class="mb-3">Tratamiento de datos personales</h5>
+            <div class="mb-3 form-check">
+              <input type="checkbox" class="form-check-input" id="acceptterms">
+              <label class="form-check-label" for="acceptterms">HE LEÍDO Y ACEPTADO LAS CONDICIONES SOBRE EL <a href="{% url 'terms_and_conditions' %}">USO DE MI INFORMACIÓN</a> PERSONAL POR LA VENTANILLA VIRTUAL Y SUS ALIADOS.</label>
+              <label class="form-check-label" for="acceptterms">AL HACER CLIC EN EL BOTÓN ENVIAR, USTED ACEPTA LA REMISIÓN DE DATOS Y DOCUMENTOS A LA PLATAFORMA VENTANILLA ÚNICA. SUS DATOS SERÁN RECOLECTADOS Y TRATADOS CONFORME CON LA POLÍTICA DE TRATAMIENTO DE DATOS.</label>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="{{ form.captcha.id_for_label }}" class="form-label">Código de Verificación: </label>
+              {{ form.captcha }}
+            </div>
+  
+            <div class="col-sm-12">
+              <button class="w-100 btn btn-primary btn-lg" type="submit" id="btn-submit" disabled>Enviar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </main>
+  
+    <footer class="my-5 pt-5 text-body-secondary text-center text-small">
+      <p class="mb-1">&copy; 2023 MyPartner</p>
+      <ul class="list-inline">        
+        <li class="list-inline-item"><a href="#">Aviso de privacidad</a></li>
+        <li class="list-inline-item"><a href="#">Soporte</a></li>
+      </ul>
+    </footer>
+  </div>
+
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'pdfjs/pdf.js' %}"></script>
+<script src="{% static 'dropzone.js' %}"></script>
+
+<script>
+  document.getElementById("myForm").addEventListener("submit", function(event) {
+  var email = document.getElementById("{{ form.email.id_for_label }}").value;
+  var emailConfirmation = document.getElementById("email_confirmation").value;
+
+  if (email !== emailConfirmation) {
+    alert("Los correos electrónicos no coinciden. Por favor, verifíquelos.");
+    event.preventDefault(); // Evitar que el formulario se envíe
+  }
+  });
+</script>
+
+<script>
+  // Limpia la dropzone
+  // Encuentra el botón por su ID
+const btnClear = document.getElementById("btnclear");
+
+// Agrega un evento de escucha al botón para borrar adjuntos
+btnClear.addEventListener("click", function() {
+  // Encuentra todos los elementos de miniatura y elimínalos
+  const thumbnails = document.querySelectorAll(".drop-zone__thumb");
+  thumbnails.forEach(thumbnail => {
+    thumbnail.remove();
+  });
+
+  // También podrías querer eliminar los archivos del input de archivos si es necesario.
+  const fileInputs = document.querySelectorAll(".drop-zone__input");
+  fileInputs.forEach(input => {
+    input.value = "";
+  });
+});
+</script>
+
+<script>
+  // Cierra el mensaje de éxito automáticamente después de 5 segundos
+  setTimeout(function() {
+    var successMessage = document.querySelector('.alert-success');
+    if (successMessage) {
+      successMessage.style.display = 'none';
+    }
+  }, 5000);
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    // Referencia al checkbox y al botón
+    const checkbox = document.getElementById('acceptterms');
+    const btnSubmit = document.getElementById('btn-submit');
+    let now = new Date();
+    let isUserAuthenticated = "{{ user.is_authenticated|yesno:'true,false' }}";
+
+    // Busca el formulario
+    const form = document.getElementById("myForm");
+
+    form.addEventListener("submit", function(event) {
+    // Obtener los valores de los campos de correo electrónico
+    const email = document.getElementById("{{ form.email.id_for_label }}").value;    
+    const emailConfirmation = document.getElementById("email_confirmation").value;
+    // Verifica si los correos electrónicos coinciden
+    if (!isUserAuthenticated) {
+      if (email !== emailConfirmation) {      
+        event.preventDefault();  // Prevenga el envío del formulario
+        alert("Los correos electrónicos no coinciden. Por favor verifica e intenta nuevamente.");  // Muestra una alerta        
+      }
+    }    
+    });
+
+    // Array con los nombres de los meses en español
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+
+    // Formatear la fecha y hora
+    // Ajusta el formato según tus necesidades
+    let formattedDate = now.getDate() + ' de ' +
+                        meses[now.getMonth()] + ' ' +
+                        now.getFullYear() + ' ' +
+                        ('0' + now.getHours()).slice(-2) + ':' +
+                        ('0' + now.getMinutes()).slice(-2);
+    
+    // Establecer la fecha y hora formateadas en el label
+    document.getElementById('currentDateTime').textContent = formattedDate;
+
+    // Escuchador de eventos para el checkbox
+    checkbox.addEventListener('change', function() {
+        if(this.checked) {
+            btnSubmit.removeAttribute('disabled');
+        } else {
+            btnSubmit.setAttribute('disabled', 'disabled');
+        }
+    });
+});
+</script>
+
+<script>
+  $(document).ready(function() {
+    // Captura el valor inmediatamente
+    var valorSeleccionado = $('#{{ form.typeId.id_for_label }}').val();
+    $('#hiddenTypeId').val(valorSeleccionado);
+});
+
+</script>
+
+<script>
+  // En el caso de NIT deshabilita Apellido
+  document.addEventListener("DOMContentLoaded", function() {
+    var typeIdField = document.getElementById("{{ form.typeId.id_for_label }}");
+    var lastNameField = document.getElementById("{{ form.lastName.id_for_label }}");
+    var firstNameLabel = document.getElementById("firstNameLabel");
+    var hiddenTypeIdField = document.getElementById("hiddenTypeId");
+
+
+    function checkTypeAndSetLastName() {
+        if (typeIdField.value === "NIT") {
+            lastNameField.readOnly = true;
+            lastNameField.style.backgroundColor = "#e9ecef";
+            lastNameField.pointerEvents = "none";
+            lastNameField.placeholder = "Campo desactivado para NIT";
+            lastNameField.value = "";
+            firstNameLabel.textContent="Nombre de empresa"
+
+            
+        } else {
+            lastNameField.readOnly = false;
+            lastNameField.style.backgroundColor = "";
+            lastNameField.placeholder = "Apellido"; 
+            firstNameLabel.textContent="Nombres";
+
+        }
+    }
+
+    // Verificación inicial
+    checkTypeAndSetLastName();
+
+    // Agrega el event listener para futuros cambios
+    typeIdField.addEventListener("change", checkTypeAndSetLastName);
+});
+  </script>
+
+{% endblock js %}

@@ -1,0 +1,553 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Ventanilla virtual | Gestor Documental - Detalle de registro{% endblock %}
+{% block header_ext %}
+<style>
+    .container.overflow-hidden {
+        padding-top: 6rem; /* Ajusta este valor según el tamaño de tu navbar */
+    }
+</style>
+{% endblock header_ext %}
+
+{% block content %}
+
+<div class="container pt-5">
+  {% block messages %}
+  {% if messages %}
+    <div class="alert alert-success">
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+    </div>
+  {% endif %}
+  {% endblock messages %}
+</div>
+
+    <div class="container">
+        <h2 class="text-">Gestor Documental - Vista de detalle</h2>    
+    </div>
+
+    <div class="container text-primary">
+        {% if record.filingNumber %}
+            <h3>Registro número {{ record.recordId }} {{ record.filingNumber }}</h3>
+        {% else %}
+            <h3>Registro número {{ record.recordId }}</h3>
+        {% endif %}        
+    </div>
+
+    <div class="row">
+    
+        <div class="col-9">
+        
+            <div class="container">
+                
+                <div class="card">
+                    <h5 class="card-header text-bg-secondary">Datos de Identificación</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text"><strong>Tipo de Identificación:</strong> {{ record.typeId }}</p>
+                            </div>
+                            <div class="col">
+                                <p class="card-text"><strong>Número de Identificación:</strong> {{ record.numberId }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text"><strong>Nombre:</strong> {{ record.firstName }}</p>
+                            </div>
+                            <div class="col">
+                                {% if record.typeId != 'NIT' %}
+                                    <p class="card-text"><strong>Apellido:</strong> {{ record.lastName }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">                        
+                            <p class="card-text"><strong>Correo electrónico:</strong> {{ record.email }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container">     
+                <div class="card">
+                    <h5 class="card-header text-bg-secondary">Contenido de la solicitud</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text"><strong>Asunto:</strong> {{ record.subject }}</p>
+                            </div>
+                            <div class="col">
+                                <p class="card-text"><strong>Persona de contacto:</strong> {{ record.contactperson }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text"><strong>Tipo comunicación:</strong> {{ record.messageType }}</p>
+                            </div>
+                            <div class="col">
+                                <p class="card-text"><strong>Área:</strong> {{ record.area }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <p class="card-text"><strong>Número de contrato:</strong> {{ record.contractNumber }}</p>
+                            </div>
+                            <div class="col">
+                                <p class="card-text"><strong>Fecha del documento:</strong> {{ record.documentDate }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p class="card-text"><strong>Link del documento:</strong> <a href="{{ record.url }}" target="_blank">{{ record.url }}</a></p>
+                        </div>                                                                                                                        
+                    </div>
+                </div>        
+            </div>
+
+
+            <div class="container">     
+                <div class="card">
+                    <h5 class="card-header text-bg-secondary">Campos adicionales del formulario</h5>
+                    <div class="card-body">
+                        {% for user_field in user_fields %}
+
+                            <div class="row">
+                                <div class="col">
+                                    {% if user_field.extrafield1 %}                        
+                                        <p class="card-text"><strong>{{ user_field.extrafield1 }}:</strong> {{ record.extrafield1 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
+                                    {% if user_field.extrafield2 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield2 }}:</strong> {{ record.extrafield2 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    {% if user_field.extrafield3 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield3 }}:</strong> {{ record.extrafield3 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
+                                    {% if user_field.extrafield4 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield4 }}:</strong> {{ record.extrafield4 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    {% if user_field.extrafield5 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield5 }}:</strong> {{ record.extrafield5 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
+                                    {% if user_field.extrafield6 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield6 }}:</strong> {{ record.extrafield6 }}</p>
+                                    {% endif %}
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    {% if user_field.extrafield7 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield7 }}:</strong> {{ record.extrafield7 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
+                                    {% if user_field.extrafield8 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield8 }}:</strong> {{ record.extrafield8 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    {% if user_field.extrafield9 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield9 }}:</strong> {{ record.extrafield9 }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col">
+                                    {% if user_field.extrafield10 %}
+                                        <p class="card-text"><strong>{{ user_field.extrafield10 }}:</strong> {{ record.extrafield10 }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        
+                        {% endfor %}
+                    </div>
+                </div>        
+            </div>
+
+        </div>
+
+        <div class="col-3">
+
+            <div class="container">     
+                <div class="card">
+                    <h5 class="card-header text-bg-secondary">Anexos a la solicitud</h5>
+                    <div class="card-body">    
+                        {% if record.url %}
+                            <li>
+                                <img class="icon-img" src="{% static '/icons/world-wide-web.png' %}" alt="other icon">
+                                <a href="{{ record.url }}" target="_blank">Link a documento</a>
+                            </li>
+                        {% endif %}      
+                        {% for file in files %}
+                            <li>
+                                {% if file.type == 'application/pdf' %}
+                                    <img class="icon-img" src="{% static '/icons/pdf.png' %}" alt="pdf icon">
+                                {% elif file.type == 'image/jpeg' %}
+                                    <img class="icon-img" src="{% static '/icons/archivo-jpg.png' %}" alt="image icon">
+                                {% else %}
+                                    <img class="icon-img" src="{% static '/icons/clip.png' %}" alt="other icon">
+                                {% endif %}
+                                <a href="data:{{ file.type }};base64,{{ file.data }}" download="{{ file.name }}">{{ file.name }}</a>
+                            </li>
+                        {% endfor %}
+                    </div>
+                </div>        
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="container">     
+                <div class="card">
+                    <h5 class="card-header text-bg-secondary">Campos de Gestor Documental</h5>
+                    <div class="card-body">          
+                        <form method="post" action="{% url 'guardar_registro' %}" id="myForm">
+                            {% csrf_token %}
+                            
+                            {% if record.recordType %} 
+
+                                <div class="form-floating pb-2">
+                                    <input type="text" name="recordType" class="form-control" id="id_recordType" value="{{ record.recordType.code }} - {{ record.recordType.description }}" readonly>
+                                    <label for="id_recordType">Tipo de radicado</label>
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-floating pb-2">
+                                    <select name="recordType" id="id_recordType" class="form-select">
+                                        <option value="">Seleccione un tipo de correspondencia</option>
+                                        {% for record_type in record_types %}
+                                            <option value="{{ record_type.id }}">{{ record_type.description }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <label for="id_recordType">Tipo de correspondencia</label>
+                                </div>
+
+                            {% endif %}
+                            
+                            {% if record.documentType %}
+
+                                <div class="form-floating pb-2">
+                                    <input type="text" name="documentType" class="form-control" id="id_documentType" value="{{ record.documentType.code }} - {{ record.documentType.description }}" readonly>
+                                    <label for="id_documentType">Tipo de documento</label>
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-floating pb-2">
+                                    <select name="documentType" id="id_documentType" class="form-select">
+                                        <!-- Las opciones para tipo documental se llenarán dinámicamente con JavaScript -->
+                                    </select>
+                                    <label for="id_documentType">Tipo documental</label>
+                                </div>
+
+                            {% endif %}
+
+                            
+                            {% if record.documentSubject %}
+
+                                <div class="form-floating pb-2">
+                                    <input type="text" name="documentSubject" class="form-control" id="id_documentSubject" value="{{ record.documentSubject.code }} - {{ record.documentSubject.description }}" readonly>
+                                    <label for="id_documentSubject">Asunto</label>
+                                </div>
+
+                            {% else %}
+
+                                <div class="form-floating pb-2">
+                                    <select name="documentSubject" id="id_documentSubject" class="form-select">
+                                        <!-- Las opciones para tipo de asunto se llenarán dinámicamente con JavaScript -->
+                                    </select>
+                                    <label for="id_documentSubject">Tipo de asunto</label>
+                                </div>
+
+                            {% endif %}
+
+                            
+
+                            <div>
+                                <h5>Campos adicionales de GD</h5>
+                            </div>
+
+                            {% for mng_field in mng_fields %}
+
+                                <div class="row">
+                                    <div class="col">
+                                        {% if mng_field.extrafield1 %}                                
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield1 is None %}
+                                                    <input type="text" name="mngextrafield1" class="form-control" id="id_mngextrafield1" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield1" class="form-control" id="id_mngextrafield1" value="{{ record.mngextrafield1 }}" readonly>
+                                                {% endif %}                                                
+                                                <label for="id_mngextrafield1">Campo adicional - {{ mng_field.extrafield1 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {% if mng_field.extrafield2 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield2 is None %}
+                                                    <input type="text" name="mngextrafield2" class="form-control" id="id_mngextrafield2" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield2" class="form-control" id="id_mngextrafield2" value="{{ record.mngextrafield2 }}" readonly>
+                                                {% endif %} 
+                                                <label for="id_mngextrafield2">Campo adicional - {{ mng_field.extrafield2 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col">
+                                        {% if mng_field.extrafield3 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield3 is None %}
+                                                    <input type="text" name="mngextrafield3" class="form-control" id="id_mngextrafield3" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield3" class="form-control" id="id_mngextrafield3" value="{{ record.mngextrafield3 }}" readonly>
+                                                {% endif %} 
+                                                <label for="id_mngextrafield3">Campo adicional - {{ mng_field.extrafield3 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {% if mng_field.extrafield4 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield4 is None %}
+                                                    <input type="text" name="mngextrafield4" class="form-control" id="id_mngextrafield4" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield4" class="form-control" id="id_mngextrafield4" value="{{ record.mngextrafield4 }}" readonly>
+                                                {% endif %} 
+                                                <label for="id_mngextrafield4">Campo adicional - {{ mng_field.extrafield4 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col">
+                                        {% if mng_field.extrafield5 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield5 is None %}
+                                                    <input type="text" name="mngextrafield5" class="form-control" id="id_mngextrafield5" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield5" class="form-control" id="id_mngextrafield5" value="{{record.mngextrafield5 }}" readonly>
+                                                {% endif %} 
+                                                <label for="id_mngextrafield5">Campo adicional - {{ mng_field.extrafield5 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {% if mng_field.extrafield6 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield6 is None %}
+                                                    <input type="text" name="mngextrafield6" class="form-control" id="id_mngextrafield6" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield6" class="form-control" id="id_mngextrafield6" value="{{ record.mngextrafield6 }}" readonly>
+                                                {% endif %} 
+                                                
+                                                <label for="id_mngextrafield6">Campo adicional - {{ mng_field.extrafield6 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col">
+                                        {% if mng_field.extrafield7 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield7 is None %}
+                                                    <input type="text" name="mngextrafield7" class="form-control" id="id_mngextrafield7" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield7" class="form-control" id="id_mngextrafield7" value="{{ record.mngextrafield7 }}" readonly>
+                                                {% endif %} 
+                                                <label for="id_mngextrafield7">Campo adicional - {{ mng_field.extrafield7 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col">
+                                        {% if mng_field.extrafield8 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield8 is None %}
+                                                    <input type="text" name="mngextrafield8" class="form-control" id="id_mngextrafield8" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield8" class="form-control" id="id_mngextrafield8" value="{{ record.mngextrafield8 }}" readonly>
+                                                {% endif %} 
+                                                
+                                                <label for="id_mngextrafield8">Campo adicional - {{ mng_field.extrafield8 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col">
+                                        {% if mng_field.extrafield9 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield9 is None %}
+                                                <input type="text" name="mngextrafield9" class="form-control" id="id_mngextrafield9" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield9" class="form-control" id="id_mngextrafield9" value="{{ record.mngextrafield9 }}" readonly>
+                                                {% endif %}
+                                                
+                                                <label for="id_mngextrafield9">Campo adicional - {{ mng_field.extrafield9 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>                
+                                    <div class="col">
+                                        {% if mng_field.extrafield10 %}
+                                            <div class="form-floating pb-2">
+                                                {% if record.extrafield10 is None %}
+                                                    <input type="text" name="mngextrafield10" class="form-control" id="id_mngextrafield10" value="" readonly>
+                                                {% else %}
+                                                    <input type="text" name="mngextrafield10" class="form-control" id="id_mngextrafield10" value="{{ record.mngextrafield10 }}" readonly>
+                                                {% endif %}
+                                                
+                                                <label for="id_mngextrafield10">Campo adicional - {{ mng_field.extrafield10 }}</label>
+                                            </div>
+                                        {% endif %}
+                                    </div>                    
+                                </div>                                                                                            
+
+                            {% endfor %}
+
+                            
+                            <input type="hidden" name="recordId" value="{{ record.recordId }}">
+                            
+
+                            <div class="form-floating pb-3">
+                                {% if record.recordType %} 
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="submit" class="w-100 btn btn-lg btn-primary" id="submitBtn" disabled>Radicar en EuroDoc</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="submit" class="w-100 btn btn-lg btn-primary" id="rejectBtn" disabled>Rechazar</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="submit" class="w-100 btn btn-lg btn-danger" id="deleteBtn" name="action" value="borrar">Borrar</button>
+                                        </div>
+                                    </div>                                    
+                                {% else %}
+                                    <div class="row">
+                                        <div class="col">
+                                            <button type="submit" class="w-100 btn btn-lg btn-primary" id="submitBtn" name="action" value="radicar">Radicar en EuroDoc</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="submit" class="w-100 btn btn-lg btn-primary" id="rejectBtn" name="action" value="rechazar">Rechazar</button>
+                                        </div>
+                                        <div class="col">
+                                            <button type="submit" class="w-100 btn btn-lg btn-danger" id="deleteBtn" name="action" value="borrar">Borrar</button>
+                                        </div>
+                                    </div>
+                                {% endif %}                                
+                            </div>                            
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    $(document).ready(function() {
+        $('#id_recordType').change(function() {
+            var recordTypeId = $(this).val();
+            $.ajax({
+                url: '/obtener_tipos_documentales/',  // URL para obtener tipos documentales según el tipo de correspondencia seleccionado
+                data: {
+                    'record_type_id': recordTypeId
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var options = '<option value="">Seleccione un tipo documental</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                    }
+                    $('#id_documentType').html(options);
+                    $('#id_documentSubject').html('<option value="">Seleccione un tipo de asunto</option>');  // Limpiar opciones de tipo de asunto
+                }
+            });
+        });
+    
+        $('#id_documentType').change(function() {
+            var documentTypeId = $(this).val();
+            $.ajax({
+                url: '/obtener_tipos_asunto/',  // URL para obtener tipos de asunto según el tipo documental seleccionado
+                data: {
+                    'document_type_id': documentTypeId
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var options = '<option value="">Seleccione un tipo de asunto</option>';
+                    for (var i = 0; i < data.length; i++) {
+                        options += '<option value="' + data[i].id + '">' + data[i].description + '</option>';
+                    }
+                    $('#id_documentSubject').html(options);
+                }
+            });
+        });
+    });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#myForm').submit(function(event) {
+                event.preventDefault();
+
+                var formData = $('#myForm').serializeArray();
+        
+                // Capturar el valor del botón presionado y agregarlo a los datos del formulario
+                var buttonValue = $('button[name="action"]:focus').val();
+                formData.push({name: 'action', value: buttonValue});
+        
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "guardar_registro" %}',
+                    data: formData,
+                    dataType: 'json',
+                    success: function(data) {
+                        alert(data.message); // Mostrar mensaje de éxito al usuario
+                        // Puedes redirigir al usuario a otra página después de guardar los datos si es necesario
+                        window.location.href = data.redirect_url;
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        alert('Ocurrió un error al guardar el registro.'); // Mostrar mensaje de error al usuario
+                    }
+                });
+            });
+        });
+    </script>    
+
+{% endblock js %}

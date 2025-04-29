@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ventanilla virtual | Búsqueda de registro{% endblock %}
+
+{% block header_ext %}
+    <style>
+        .container.overflow-hidden {
+            padding-top: 4rem; /* Ajusta este valor según el tamaño de tu navbar */
+        }
+    </style>
+{% endblock header_ext %}
+
+{% block content %}
+
+<div class="container-lg pt-4">
+    <form id="record-search-form" method="post" action="{% url 'record_search' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="recordId">Número de radicado</label>
+            <input type="text" id="recordId" name="recordId" class="form-control" placeholder="Número de radicado">
+        </div>
+        <div class="form-group">
+            <label for="typeId">Tipo de identificación</label>
+            <select name="typeId" id="typeId" class="form-control">
+                <option value="NIT">NIT</option>
+                <option value="CC">Cédula de ciudadanía</option>
+            </select>
+        </div>
+        <div class="form-group pb-3">
+            <label for="numberId">Número de identificación</label>
+            <input type="text" id="numberId" name="numberId" class="form-control" placeholder="Número de identificación">
+        </div>
+        <button type="submit" class="btn btn-secondary">Buscar registro</button>
+    </form>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="record-result" class="container mt-4">
+                <!-- Los resultados de la búsqueda se mostrarán aquí -->
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#record-search-form').on('submit', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: 'POST',
+                data: $(this).serialize(),
+                success: function(response) {
+                    if(response.status === 'success') {
+                        var record = response.record;
+                        var content = '<div class="row"><div class="col"><fieldset disabled><legend>Registro encontrado</legend>';
+                            content += '<div class="row"><div class="col">'                            
+                            content += '<div class="mb-3"><label for="disabledTextInput1"  class="form-label">Número de registro</label><input type="text" id="disabledTextInput1" class="form-control" placeholder="' + record.recordId + '"></div>';
+                            content += '</div><div class="col">'
+                            content += '<div class="mb-3"><label for="disabledTextInput2"  class="form-label">Fecha de registro</label><input type="text" id="disabledTextInput2" class="form-control" placeholder="' + record.recordDate + '"></div>';
+                            content += '</div></div>'
+                            content += '<div class="row"><div class="col">'
+                            content += '<div class="mb-3"><label for="disabledTextInput3"  class="form-label">Nombre</label><input type="text" id="disabledTextInput3" class="form-control" placeholder="' + record.firstName + '"></div>';
+                            content += '</div><div class="col">'
+                            content += '<div class="mb-3"><label for="disabledTextInput4"  class="form-label">Apellido</label><input type="text" id="disabledTextInput4" class="form-control" placeholder="' + record.lastName + '"></div>';
+                            content += '</div></div>'
+                            content += '<div class="row"><div class="col">'
+                            content += '<div class="mb-3"><label for="disabledTextInput5"  class="form-label">Tipo de identificación</label><input type="text" id="disabledTextInput5" class="form-control" placeholder="' + record.typeId + '"></div>';
+                            content += '</div><div class="col">'
+                            content += '<div class="mb-3"><label for="disabledTextInput6"  class="form-label">Número de identificación</label><input type="text" id="disabledTextInput6" class="form-control" placeholder="' + record.numberId + '"></div>';
+                            content += '</div></div>'
+                            content += '<div class="row"><div class="col">'
+                            content += '<div class="mb-3"><label for="disabledTextInput7"  class="form-label">Correo electrónico</label><input type="text" id="disabledTextInput7" class="form-control" placeholder="' + record.email + '"></div>';
+                            content += '</div><div class="col">'                            
+                            content += '</div></div>'
+                            content += '<div class="mb-3"><label for="disabledTextInput9"  class="form-label">Tipo de mensaje</label><input type="text" id="disabledTextInput9" class="form-control" placeholder="' + record.messageType + '"></div>';
+                            content += '<div class="mb-3"><label for="disabledTextInput10" class="form-label">Área</label><input type="text" id="disabledTextInput10" class="form-control" placeholder="' + record.area + '"></div>';
+                            content += '</div></fieldset>';
+                            content += '<div class="col"><legend>Documentos</legend>';
+
+                        var files = response.files;    
+                        var filesContent = '<div class="list-group">';
+                        files.forEach(function(file) {
+                            var blob = b64toBlob(file.data, file.type);
+                            var blobUrl = URL.createObjectURL(blob);
+
+                            filesContent += '<a class="list-group-item list-group-item-action" href="' + blobUrl + '" download="' + file.name + '">' + file.name + '</a>';
+                        });
+                        filesContent += '</div>';
+
+                        content += filesContent;
+                        content += '</div>'; 
+
+                        console.log(content)
+
+                        $('#record-result').html(content);
+                    } else if(response.status === 'not_found') {
+                        $('#record-result').html('<p>No se encontró el registro solicitado.</p>');
+                    }
+                },
+                error: function() {
+                    $('#record-result').html('<p>Ocurrió un error al buscar el registro.</p>');
+                }
+            });
+        });
+    });
+
+    
+function b64toBlob(b64Data, contentType, sliceSize) {
+    contentType = contentType || '';
+    sliceSize = sliceSize || 512;
+
+    var byteCharacters = atob(b64Data);
+    var byteArrays = [];
+
+    for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    var blob = new Blob(byteArrays, {type: contentType});
+    return blob;
+}
+
+</script>
+
+{% endblock js %}
