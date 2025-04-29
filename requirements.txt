@@ -1,0 +1,14 @@
+django
+celery-progress
+Celery
+django_celery_results
+redis
+django-redis
+whitenoise
+gunicorn
+djangorestframework
+psycopg2
+python-magic
+zeep
+django-cors-headers
+django-simple-captcha

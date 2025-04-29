@@ -1,0 +1,11 @@
+# Django #
+*db.sqlite3
+*\__pycache__
+*.log
+*.pot
+*.pyc
+# Visual Studio Code # 
+.vscode/* 
+debug.log
+db.sqlite3
+media
